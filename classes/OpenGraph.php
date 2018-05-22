@@ -44,6 +44,7 @@ class OpenGraph3 extends \Frontend {
         Controller::loadDataContainer('opengraph_fields');
         System::loadLanguageFile('opengraph_fields');
 
+        /** @var $objPage \Contao\PageModel */
         global $objPage;
 
         $objRef = !$ref ? $objPage : $ref;
@@ -150,6 +151,33 @@ class OpenGraph3 extends \Frontend {
             // og:url added automatically
             if( !self::checkTag('og:url') ) {
                 self::addTag( 'og:url', Environment::get('url') . Environment::get('requestUri') );
+            }
+
+            // check if the current context is from generatePage Hook (contao will pass the same $objPage model as $ref)
+            if( $objRef === $objPage ) {
+                $description = $objPage->description;
+                //pageTitle is the optional title you can assign, title is the mandatory name of the page
+                $rootTitle = $objRootPage->pageTitle ?:  $objRootPage->title;
+                $title = $objPage->pageTitle ?:  $objPage->title;
+
+                if( !self::checkTag('og:title') ) {
+                    self::addTag('og:title', "{$title} - {$rootTitle}");
+                }
+
+                if( !self::checkTag('twitter:title') ) {
+                    self::addTag('twitter:title', "{$title} - {$rootTitle}");
+                }
+
+                //description may not always be set
+                if( $description ) {
+                    if( !self::checkTag('og:description') ) {
+                        self::addTag('og:description', $description);
+                    }
+
+                    if( !self::checkTag('twitter:description') ) {
+                        self::addTag('twitter:description', $description);
+                    }
+                }
             }
         }
     }
