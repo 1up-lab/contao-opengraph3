@@ -139,7 +139,22 @@ class OpenGraph3 extends \Frontend {
                             $value = 'en_US';
                             break;
                         default :
-                            $value = sprintf("%s_%s",$objPage->language,strtoupper($objPage->language));
+                            /**
+                             * @todo this is better than before but still not a good solution
+                             *
+                             * Contao can either store `cs` (language) or `cs-CZ` (language and territory)
+                             * For example `cs` would result in `cs_CS` which is wrong (`cs_CZ` would be correct)
+                             * If you entered `cs-CZ` in contao BEFORE this "fix" you got `cs-CZ_CS-CZ` as output
+                             * which is completely broken obviously
+                             *
+                             * this "fix" only works if you define language AND territory in the rootPage, otherwise
+                             * it will still just append the language as uppercase like before
+                             */
+                            $value = str_replace('-', '_', $objPage->language);
+
+                            if( strlen($objPage->language) == 2 ) {
+                                $value = sprintf("%s_%s",$objPage->language,strtoupper($objPage->language));
+                            }
                             break;
                     }
                 }
