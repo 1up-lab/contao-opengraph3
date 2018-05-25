@@ -154,11 +154,11 @@ class OpenGraph3 extends \Frontend {
             }
 
             // check if the current context is from generatePage Hook (contao will pass the same $objPage model as $ref)
-            if( $objRef === $objPage ) {
-                $description = $objPage->description;
+            if( $objRef instanceof PageModel ) {
+                $description = $objRef->description;
                 //pageTitle is the optional title you can assign, title is the mandatory name of the page
                 $rootTitle = $objRootPage->pageTitle ?:  $objRootPage->title;
-                $title = $objPage->pageTitle ?:  $objPage->title;
+                $title = $objRef->pageTitle ?:  $objRef->title;
 
                 if( !self::checkTag('og:title') ) {
                     self::addTag('og:title', "{$title} - {$rootTitle}");
