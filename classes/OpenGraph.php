@@ -53,6 +53,8 @@ class OpenGraph3 extends \Frontend {
         self::parseAdditionalProperties( $objRef );
         self::parseAdditionalProperties( $objRootPage );
 
+        self::modifyObjectValuesHook( $objRef, $objPage, $objRootPage );
+
         // add og tags
         if( !empty($GLOBALS['TL_DCA']['opengraph_fields']['fields']) ) {
 
@@ -340,5 +342,32 @@ class OpenGraph3 extends \Frontend {
         }
 
         return false;
+    }
+
+    /**
+     * You can modify the objects which carry the values for the configured fields: For example if you want to
+     * load a fallback og:image if none has been configured.
+     *
+     * You can do the this with a save_callback as well, but that means someone or something has to "re-save" the rows
+     * which are affected. Before using this Hook you should make sure you cannot use save_callback because it
+     * is more performance friendly than loading data in your registered callback function
+     *
+     * @param mixed     $objRef
+     * @param PageModel $objPage
+     * @param PageModel $objRootPage
+     *
+     * @return void
+     */
+    private static function modifyObjectValuesHook( $objRef, PageModel $objPage, PageModel $objRootPage ) {
+
+        if( !isset($GLOBALS['TL_HOOKS']['opengraph3_modifyObjectValues']) && !\is_array($GLOBALS['TL_HOOKS']['opengraph3_modifyObjectValues']) ) {
+            return;
+        }
+
+        foreach( $GLOBALS['TL_HOOKS']['opengraph3_modifyObjectValues'] as $callback ) {
+
+            $object = self::importStatic($callback[0]);
+            $object->{$callback[1]}($objRef, $objPage, $objRootPage);
+        }
     }
 }
