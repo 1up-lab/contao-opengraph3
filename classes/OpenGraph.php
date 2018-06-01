@@ -48,7 +48,7 @@ class OpenGraph3 extends \Frontend {
         global $objPage;
 
         $objRef = !$ref ? $objPage : $ref;
-        $objRootPage = ($objRef instanceof \Contao\PageModel) ? PageModel::findById( $objPage->rootId ) : NULL;
+        $objRootPage = ($objPage !== NULL) ? PageModel::findById( $objPage->rootId ) : NULL;
 
         self::parseAdditionalProperties( $objRef );
         self::parseAdditionalProperties( $objRootPage );
