@@ -212,8 +212,15 @@ class OpenGraph3 extends \Frontend {
      * @return String
      */
     public function findCompatibleModules( $objRow, $strBuffer, $objElement ) {
+        $elementClass = get_class($objElement);
 
-        if( get_class($objElement) === "Contao\ContentModule" ) {
+        /**
+         * support both the Contao ContentModule AND Custom ones
+         * NOTICE: Contao does not supply a fully qualified class name in $GLOBALS['TL_CTE']['includes']['module'] for
+         * its own classes - that's why we have an OR condition here
+         * Basically "Contao Default" OR a custom, fully qualified class name that replaces the ContentModule
+         */
+        if( $elementClass === "Contao\ContentModule" || $elementClass === $GLOBALS['TL_CTE']['includes']['module'] ) {
 
             $objModule = NULL;
             $objModule = ModuleModel::findById( $objElement->module );
