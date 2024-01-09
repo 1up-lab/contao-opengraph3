@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+<file>
+<body>
+    <!-- LEGENDS -->
+    <trans-unit id="tl_settings.opengraph_twitter_legend">
+        <target>Open Graph / Twitter settings</target>
+    </trans-unit>
+    <!-- FIELDS -->
+    <trans-unit id="tl_settings.og_image_size.0">
+        <target>Open Graph image size</target>
+    </trans-unit>
+    <trans-unit id="tl_settings.og_image_size.1">
+        <target>Here you can set the image dimensions and the resize mode for the og:image.</target>
+    </trans-unit>
+    <trans-unit id="tl_settings.twitter_image_size.0">
+        <target>Twitter image size</target>
+    </trans-unit>
+    <trans-unit id="tl_settings.twitter_image_size.1">
+        <target>Here you can set the image dimensions and the resize mode for the twitter:image.</target>
+    </trans-unit>
+</body>
+</file>
+</xliff>
